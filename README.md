@@ -107,7 +107,7 @@ Do not interpret results from synthetic demonstration data as proof of real-worl
 ## Author
 
 **Dhanusri Prabhakaran**  
-B.Tech Information Technology | Aspiring Data Analyst / Data Scientist
+
 
 GitHub: [Dhanusri-analyst](https://github.com/Dhanusri-analyst)
 
