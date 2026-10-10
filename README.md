@@ -114,3 +114,20 @@ GitHub: [Dhanusri-analyst](https://github.com/Dhanusri-analyst)
 ---
 
 FinSight AI is a portfolio project demonstrating practical application development, data analysis, and machine learning workflows.
+## Application Screenshots
+
+### FinSight AI — Application Overview
+![FinSight AI welcome screen and multilingual interface](assets/screenshots/overview.png)
+
+### Expense Management and Receipt Scanner
+![Add transactions, scan receipts, and view expense history](assets/screenshots/expense-management.png)
+
+### Finance Q&A
+![FinSight AI answering a personal finance question](assets/screenshots/finance-qa.png)
+
+### Machine Learning — Anomaly Detection
+![Isolation Forest anomaly detection dashboard](assets/screenshots/anomaly-detection.png)
+
+### Spending Analytics
+![Spending by category and spending over time](assets/screenshots/spending-analytics.png)
+
