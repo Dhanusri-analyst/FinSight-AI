@@ -2309,6 +2309,55 @@ def build_financial_answer(df, question, lang):
     work = df.copy()
     work["Amount"] = pd.to_numeric(work["Amount"], errors="coerce")
     work = work.dropna(subset=["Amount"])
+
+    # Handle unusual-expense questions before the normal finance intents.
+    anomaly_keywords = [
+        "unusual", "unusually", "anomal", "outlier",
+        "suspicious", "abnormal", "unexpected",
+        "unusual expense", "unusual spending",
+        "அசாதாரண", "வழக்கத்திற்கு மாறான",
+        "असामान्य", "अप्रत्याशित",
+        "అసాధారణ", "అనూహ్య",
+        "അസാധാരണ", "അപ്രതീക്ഷിത",
+        "ಅಸಾಮಾನ್ಯ", "ಅನಿರೀಕ್ಷಿತ"
+    ]
+
+    if any(word in q for word in anomaly_keywords):
+        if len(work) < 5:
+            if lang == "ta":
+                return "வழக்கத்திற்கு மாறான செலவுகளைக் கண்டறிய குறைந்தது 5 பரிவர்த்தனைகள் தேவை."
+            if lang == "hi":
+                return "असामान्य खर्चों की जाँच के लिए कम से कम 5 लेन-देन आवश्यक हैं."
+            return "I need at least 5 transactions to check for statistically unusual expenses."
+
+        flagged = detect_spending_anomalies(work)
+        flagged = flagged[flagged["Is_Anomaly"] == True].sort_values(
+            "Amount", ascending=False
+        )
+
+        if flagged.empty:
+            if lang == "ta":
+                return "உங்கள் பதிவுகளில் புள்ளிவிவர அடிப்படையில் அசாதாரணமான செலவுகள் எதுவும் கண்டறியப்படவில்லை."
+            if lang == "hi":
+                return "आपके रिकॉर्ड में सांख्यिकीय रूप से असामान्य खर्च नहीं मिले."
+            return "I didn't detect any statistically unusual expenses in your records."
+
+        lines = []
+        for _, row in flagged.iterrows():
+            description = str(row.get("Description", "Expense"))
+            category = str(row.get("Category", "Unknown"))
+            amount = float(row["Amount"])
+            date = str(row.get("Date", "Date unavailable"))
+            lines.append(f"- {description} ({category}): ₹{amount:,.2f} — {date}")
+
+        details = "\\n".join(lines)
+
+        if lang == "ta":
+            return "உங்கள் பதிவுகளில் மதிப்பாய்வு செய்ய வேண்டிய அசாதாரண செலவுகள்:\\n" + details + "\\n\\nஇவை புள்ளிவிவர அடிப்படையிலான எச்சரிக்கைகள் மட்டுமே; மோசடி என்று உறுதிப்படுத்துவதில்லை."
+        if lang == "hi":
+            return "इन असामान्य खर्चों की समीक्षा करें:\\n" + details + "\\n\\nये केवल सांख्यिकीय संकेत हैं, धोखाधड़ी का प्रमाण नहीं."
+        return "These expenses were flagged as statistically unusual and may be worth reviewing:\\n" + details + "\\n\\nThese are statistical flags, not proof of fraud."
+
     total = float(work["Amount"].sum()) if not work.empty else 0.0
     count = int(len(work))
     average = total / count if count else 0.0
