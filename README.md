@@ -1,7 +1,7 @@
 # FinSight AI — Smart Expense Tracker & Financial Analytics
 
 A Python-based personal finance application combining data analytics, machine learning, anomaly detection, and spending forecasts.
-
+🚀 **Live Demo:** [Try FinSight AI](https://finsight-ai-wch4jehec78exkdzl6nahp.streamlit.app/)
 ## Overview
 
 FinSight AI helps users record expenses, monitor budgets, understand spending patterns, and identify transactions that may deserve review through an interactive Streamlit dashboard.
