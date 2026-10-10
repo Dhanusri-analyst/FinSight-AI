@@ -1,7 +1,9 @@
+
 # Python virtual environments
 .venv/
 venv/
 env/
+ENV/
 
 # Python cache
 __pycache__/
@@ -10,6 +12,7 @@ __pycache__/
 # Testing and logs
 .pytest_cache/
 .coverage
+.coverage.*
 htmlcov/
 *.log
 *.tmp
@@ -18,25 +21,32 @@ htmlcov/
 .env
 .env.*
 !.env.example
+.streamlit/secrets.toml
 
-# Personal database
+# Local database and datasets
 database/finsight.db
+database/*.db
 database/*.db-journal
+data/
 
 # Editor and operating system files
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
-# Local datasets and personal settings
-data/
-database/*.db
+
 # Local backup copies of the Streamlit app
 streamlit_app_backup.py
 streamlit_app_backup_500.py
 streamlit_backup2versn_app.py
 streamlit_backupbeforeforecating33_app.py
-# Backup and accidental duplicate files
 *.backup
+
+# Accidental duplicate files
 modules/modules/
 modules/test_lstm.py
+
+# Python packaging and build files
+build/
+dist/
+*.egg-info/
